@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Aviation Map</title>
+    <!-- Leaflet CSS for map styling -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Google Fonts for modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Custom styles -->
+    <style>
+        /* Global reset and layout */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            background: #2d3e50; /* Dark aviation color */
+            color: #fff;
+            padding: 20px 40px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: none; /* Remove header to make space for the map */
+        }
+
+        /* Main map container */
+        #map {
+            flex-grow: 1;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        /* Footer */
+        footer {
+            background: #2d3e50;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 0.9rem;
+        }
+
+        /* Smooth transitions and animations */
+        .fade-in {
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Legend styling */
+        .leaflet-control-layers {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 15px;
+            font-size: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .legend {
+            padding: 10px 15px;
+            font-size: 14px;
+            line-height: 24px;
+            color: #555;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-weight: 500;
+        }
+
+        .legend i {
+            width: 22px;
+            height: 22px;
+            margin-right: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .legend .description {
+            font-style: italic;
+            color: #444;
+            margin-left: 10px;
+        }
+
+        .legend div {
+            margin-bottom: 8px; /* Add spacing between each item */
+        }
+
+        .legend .key {
+            font-weight: 600; /* Bold for key */
+            font-size: 16px; /* Slightly larger text for better readability */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Explore Aviation Weather in New Zealand</h1>
+        <p>Get live flying conditions in an instant</p>
+    </header>
+
+    <div id="map" class="fade-in"></div>
+
+    <footer>
+        <p>&copy; </p>
+    </footer>
+
+    <!-- Leaflet JS for map functionality -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Custom JavaScript for map handling -->
+    <script src="app.js"></script>
+
+    <script>
+        // Adding the legend to the map
+        const legend = L.control({position: 'bottomright'});
+
+        legend.onAdd = function () {
+            const div = L.DomUtil.create('div', 'legend');
+            const categories = ['VFR', 'MVFR', 'IFR', 'LIFR', 'Windy', 'Gusty'];
+            const colors = ['green', 'yellow', 'red', 'purple', 'blue', 'magenta'];
+
+            for (let i = 0; i < categories.length; i++) {
+                div.innerHTML +=
+                    `<div>
+                        <i style="background:${colors[i]}"></i>
+                        <span class="key">${categories[i]}</span>
+                        <span class="description">${getDescription(categories[i])}</span>
+                    </div>`;
+            }
+            return div;
+        };
+
+        // Adding description for each condition
+        function getDescription(category) {
+            const descriptions = {
+                'VFR': 'Visual Flight Rules: Ideal flying conditions.',
+                'MVFR': 'Marginal Visual Flight Rules: Conditions becoming worse, but still flyable.',
+                'IFR': 'Instrument Flight Rules: Poor visibility, requires instruments for navigation.',
+                'LIFR': 'Low Instrument Flight Rules: Very poor visibility, highly restricted flying.',
+                'Windy': 'Strong winds, possibly hazardous for certain flights.',
+                'Gusty': 'Intermittent gusts, could affect aircraft control.'
+            };
+            return descriptions[category] || '';
+        }
+
+        legend.addTo(map);
+    </script>
+</body>
+</html>
