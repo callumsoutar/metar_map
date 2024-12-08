@@ -1,0 +1,37 @@
+/* Style the legend box */
+.legend {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  display: block; /* Default display for desktop */
+}
+
+/* Legend toggle button */
+.legend-toggle {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: #007BFF;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  z-index: 1000; /* Ensure it's above the map */
+  display: none; /* Hide the button by default */
+}
+
+/* Show the toggle button on mobile */
+@media (max-width: 768px) {
+  .legend {
+    display: none; /* Hide the legend by default */
+  }
+  .legend-toggle {
+    display: block; /* Show the toggle button */
+  }
+}
